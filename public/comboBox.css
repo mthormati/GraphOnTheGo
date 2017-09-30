@@ -1,7 +1,7 @@
 .ui-combobox, .ui-combobox * {outline:0 none; text-overflow:ellipsis;}
 .ui-combobox {
   margin: 3rem auto;
-  width: 50%;
+  width: 50vw;
   font-family:sans-serif;
   display:inline-block;
   position:relative;
