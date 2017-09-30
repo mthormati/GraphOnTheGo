@@ -1,0 +1,13 @@
+.text-center {
+  text-align: center;
+}
+
+.text-header {
+  line-height: 48px;
+  font-weight: 600;
+  color: white;
+}
+
+label:hover {
+  background:whitesmoke;
+}
