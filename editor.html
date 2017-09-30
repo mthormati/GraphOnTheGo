@@ -10,14 +10,40 @@
 
   <link rel="stylesheet" href="/styles.css">
   <link href='//fonts.googleapis.com/css?family=Merriweather:400,700,400italic,700italic,900,900italic,300italic,300' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.34.4/handsontable.min.css">
   <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handsontable/0.34.4/handsontable.full.min.js"></script>
   <script src="/lib/masonry.js"></script>
+  <style>
+  body {
+margin: 20px 30px;
+font-size: 13px;
+font-family: 'Open Sans', Helvetica, Arial;
+}
+
+a {
+color: #34A9DC;
+text-decoration: none;
+}
+  </style>
 </head>
 
 <body data-current-theme="gmail">
-<div class="app-popup  app-giphy">
+  <!-- <h2>Handsontable Basic Example (100x10)</h2>
+<p>
+Head to <a href="https://handsontable.com" target="_blank">handsontable.com</a> to learn more about Handsontable.
+</p>
+
+<div id="example"></div> -->
+
+<!-- <div id="example1" class="hot handsontable"></div> -->
+
+
+<div id="example" class="dataTable"></div>
+<button id="click"></button>
+<!-- <div class="app-popup  app-giphy">
 <div class="toolbar  text--reverse  text--caps  toolbar--app  ui-face  flexbox">
   <div class="toolbar__title  flex-fill">
     <form class="search">
@@ -39,9 +65,9 @@
     <li></li>
   </ul>
 </div>
-</div>
+</div> -->
 <script>
-  var GiphyEditor = Backbone.View.extend({
+  /*var GiphyEditor = Backbone.View.extend({
     // The current XHR search request.
     _currentXhr: null,
 
@@ -234,8 +260,149 @@
   // Create
   new GiphyEditor({
     el: document.body
-  }).render();
+  }).render();*/
 
+
+  /*var data = function () {
+  return Handsontable.helper.createSpreadsheetData(100, 10);
+};
+
+var container = document.getElementById('example');
+
+var hot = new Handsontable(container, {
+  data: data(),
+  minSpareCols: 1,
+  minSpareRows: 1,
+  rowHeaders: true,
+  colHeaders: true,
+  contextMenu: true
+});*/
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  /*var
+    data1 = [
+      ['', 'Tesla', 'Nissan', 'Toyota', 'Honda', 'Mazda', 'Ford'],
+      ['2017', 10, 11, 12, 13, 15, 16],
+      ['2018', 10, 11, 12, 13, 15, 16],
+      ['2019', 10, 11, 12, 13, 15, 16],
+      ['2020', 10, 11, 12, 13, 15, 16],
+      ['2021', 10, 11, 12, 13, 15, 16]
+    ],
+    container1 = document.getElementById('example1'),
+    settings1 = {
+      data: data1
+    },
+    hot1;
+
+  hot1 = new Handsontable(container1, settings1);
+  data1[0][1] = 'Ford'; // change "Kia" to "Ford" programmatically
+
+  document.getElementById('click').onclick = function(){
+    console.log(data1);
+  }*/
+  var session;
+      var colHeadings = ['D', 'B', 'C'];
+      var data = [
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ],
+          [ , , , ]
+      ],
+          container = document.getElementById('example'),
+          hot;
+
+      hot = new Handsontable(container, {
+          data: data,
+          colHeaders: colHeadings,
+
+           afterGetColHeader: function (col, TH) {
+              // nothing for first column
+              if (col == -1)
+              {
+                  return;
+              }
+            }
+            });
+
+
+         $("th").dblclick(function (e) {
+             e.preventDefault();
+             var a = hot.getSelected();
+            var b  = hot.getColHeader(a[1],a[2]);
+              var headers = hot.getColHeader();
+             var value;
+
+            if($("th").find("input[name='id']").val())
+            {
+                value  = $("th").find("input[name='id']").val();
+                headers[session] = value;
+                 session = a[1];
+                 headers[a[1]]="<input name='id' type='text' value="+b+"\>";
+          hot.updateSettings({
+                      colHeaders: headers
+                  });
+            }
+             else
+             {
+                 session = a[1];
+                 headers[a[1]]="<input name='id' type='text' value="+b+"\>";
+                       hot.updateSettings({
+                      colHeaders: headers
+                  });
+            $(this).find("input[name='id']").focus();
+             }
+
+          });
+
+
+
+
+     $("th").change(function (e){
+        e.preventDefault();
+        var a = hot.getSelected();
+         var b  = hot.getColHeader(a[1],a[2]);
+              var headers = hot.getColHeader();
+        var value  = $(this).find("input[name='id']").val();
+         headers[a[1]] = value;
+          hot.updateSettings({
+                      colHeaders: headers
+                  });
+  });
+
+  hot.render();
+
+  document.getElementById('click').onclick = function(){
+    var headers = document.getElementsByClassName('colHeader');
+    var finalHeader = [];
+    for(var i = 0 ; i < headers.length/2 ; i++){
+      finalHeader[i] = headers[i].innerText;
+    }
+    // console.log(headers[0].innerText);
+
+    // headers.slice(0, Math.ceil(headers.length/2)) . indexOf(val)
+    // console.log(finalHeader)
+    // console.log(data);
+  }
+
+
+});
 </script>
 </body>
 </html>
