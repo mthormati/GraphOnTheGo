@@ -1,4 +1,3 @@
-var key = require('../utils/key');
 var request = require('request');
 var _ = require('underscore');
 
