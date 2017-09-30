@@ -10,6 +10,7 @@
 
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/extendedStyles.css">
+  <link rel="stylesheet" href="/comboBox.css">
   <link href='//fonts.googleapis.com/css?family=Merriweather:400,700,400italic,700italic,900,900italic,300italic,300' rel='stylesheet' type='text/css'>
   <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
@@ -20,7 +21,15 @@
 <body data-current-theme="gmail">
     <header class="toolbar text-center text-header toolbar--app gamma ui-face">Create a Graph</header>
 
-    <div class="chart"></div>
+    <div class="ui-combobox">
+      <div class="ui-value" placeholder="Select Graph"></div>
+      <div class="ui-options">
+        <label>Line Graph</label>
+        <label>Bar Chart</label>
+        <label>Pie Chart</label>
+      </div>
+    </div>
+    <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
     
 <!-- <div class="app-popup  app-giphy">
 <div class="toolbar  text--reverse  text--caps  toolbar--app  ui-face  flexbox">
@@ -45,7 +54,8 @@
   </ul>
 </div>
 </div> -->
-<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+<script src="index.js"></script>
 <script>
   // var GiphyEditor = Backbone.View.extend({
   //   // The current XHR search request.
