@@ -2,32 +2,32 @@ var data;
 
 document.addEventListener("DOMContentLoaded", function() {
     var session;
-    var colHeadings = ['Labels', 'Data']; 
+    var colHeadings = ['Labels', 'Data'];
     data = [
         [ , , ],
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ],      
-        [ , , ]   
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ],
+        [ , , ]
     ],
     container = document.getElementById('example');
-  
+
     hot = new Handsontable(container, {
         data: data,
         colHeaders: colHeadings,
@@ -40,14 +40,14 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             }
     });
-  
+
     $("th").dblclick(function (e) {
         e.preventDefault();
         var a = hot.getSelected();
         var b  = hot.getColHeader(a[1],a[2]);
         var headers = hot.getColHeader();
         var value;
-  
+
         if($("th").find("input[name='id']").val())
         {
             value  = $("th").find("input[name='id']").val();
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
       $(this).find("input[name='id']").focus();
         }
-  
+
     });
 
     $("th").change(function (e){
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     colHeaders: headers
                 });
     });
-  
+
     hot.render();
 });
 
@@ -97,6 +97,19 @@ var GraphEditor = Backbone.View.extend({
         'click label': '_labelSelect',
         'mouseover .ui-value': '_dropdown',
         'click #preview-button': '_preview',
+        'click #submitButton': '_done'
+    },
+
+    _done: function(e){
+        // console.log('hi')
+        var chart = document.getElementById('myChart').toDataURL();
+        var width = document.getElementById('myChart').width;
+        Mixmax.done({
+        src: chart,
+        width: width
+      });
+        // console.log(document.getElementById('myChart'));
+        // console.log(document.getElementById('myChart').width);
     },
 
     _labelSelect: function(e) {
@@ -114,17 +127,17 @@ var GraphEditor = Backbone.View.extend({
         for(var i = 0 ; i < headers.length/2 ; i++){
           finalHeader[i] = headers[i].innerText;
         }
-    
+
         let labels = [];
         let dataSet = [];
-    
+
         data.forEach((el) => {
           el.forEach((item, i) => {
             if (i === 0) labels.push(item);
             else dataSet.push(item);
           });
         });
-    
+
         this.initializeChart(labels, dataSet);
     },
 
@@ -188,9 +201,10 @@ var GraphEditor = Backbone.View.extend({
                             beginAtZero:true
                         }
                     }]
-                }
+                },
+                // onAnimationComplete: done
             }
-        });   
+        });
     }
 
     // render: function() {
@@ -370,4 +384,3 @@ var GraphEditor = Backbone.View.extend({
 new GraphEditor({
 el: document.body
 }).render();
-
