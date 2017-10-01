@@ -38,7 +38,7 @@
     <div id="table-container">
       <div id="example" class="dataTable"></div>
     </div>
-    <button id="click"></button>
+    <div id="click" class="btn zeta mr">Preview Graph</div>
 
     <div id="bar-chart" class="chart-container">
       <canvas id="myChart"></canvas>
@@ -265,130 +265,102 @@
   // Create
   new GiphyEditor({
     el: document.body
-  }).render();*/
+  }).render();
 
 
-  /*var data = function () {
+  var data = function () {
   return Handsontable.helper.createSpreadsheetData(100, 10);
-};
+};*/
 
-var container = document.getElementById('example');
 
-var hot = new Handsontable(container, {
-  data: data(),
-  minSpareCols: 1,
-  minSpareRows: 1,
-  rowHeaders: true,
-  colHeaders: true,
-  contextMenu: true
-});*/
+//------------------------------------------------------------------------------
+//Table
 
 document.addEventListener("DOMContentLoaded", function() {
-
-  /*var
-    data1 = [
-      ['', 'Tesla', 'Nissan', 'Toyota', 'Honda', 'Mazda', 'Ford'],
-      ['2017', 10, 11, 12, 13, 15, 16],
-      ['2018', 10, 11, 12, 13, 15, 16],
-      ['2019', 10, 11, 12, 13, 15, 16],
-      ['2020', 10, 11, 12, 13, 15, 16],
-      ['2021', 10, 11, 12, 13, 15, 16]
-    ],
-    container1 = document.getElementById('example1'),
-    settings1 = {
-      data: data1
-    },
-    hot1;
-
-  hot1 = new Handsontable(container1, settings1);
-  data1[0][1] = 'Ford'; // change "Kia" to "Ford" programmatically
-
-  document.getElementById('click').onclick = function(){
-    console.log(data1);
-  }*/
   var session;
-      var colHeadings = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-      var data = [
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ],
-          [ , , , , , , , , , , , , , , , , , , , , , , , , , , ]
-      ],
-          container = document.getElementById('example'),
-          hot;
+    var colHeadings = ['Labels', 'Data']; 
+    var data = [
+      [ , , ],
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ],      
+      [ , , ]   
+    ],
+      container = document.getElementById('example'),
+      hot;
 
       hot = new Handsontable(container, {
-          data: data,
-          colHeaders: colHeadings,
-
-           afterGetColHeader: function (col, TH) {
+        data: data,
+        colHeaders: colHeadings,
+        colWidths: 298,
+          afterGetColHeader: function (col, TH) {
               // nothing for first column
               if (col == -1)
               {
                   return;
               }
             }
-            });
+      });
 
 
-         $("th").dblclick(function (e) {
-             e.preventDefault();
-             var a = hot.getSelected();
-            var b  = hot.getColHeader(a[1],a[2]);
-              var headers = hot.getColHeader();
-             var value;
+  $("th").dblclick(function (e) {
+    e.preventDefault();
+    var a = hot.getSelected();
+    var b  = hot.getColHeader(a[1],a[2]);
+    var headers = hot.getColHeader();
+    var value;
 
-            if($("th").find("input[name='id']").val())
-            {
-                value  = $("th").find("input[name='id']").val();
-                headers[session] = value;
-                 session = a[1];
-                 headers[a[1]]="<input name='id' type='text' value="+b+"\>";
-          hot.updateSettings({
-                      colHeaders: headers
-                  });
-            }
-             else
-             {
-                 session = a[1];
-                 headers[a[1]]="<input name='id' type='text' value="+b+"\>";
-                       hot.updateSettings({
-                      colHeaders: headers
-                  });
-            $(this).find("input[name='id']").focus();
-             }
-
+    if($("th").find("input[name='id']").val())
+    {
+        value  = $("th").find("input[name='id']").val();
+        headers[session] = value;
+        session = a[1];
+        headers[a[1]]="<input name='id' type='text' value="+b+"\>";
+    hot.updateSettings({
+      colHeaders: headers
+    });
+    }
+      else
+      {
+          session = a[1];
+          headers[a[1]]="<input name='id' type='text' value="+b+"\>";
+                hot.updateSettings({
+              colHeaders: headers
           });
+    $(this).find("input[name='id']").focus();
+      }
+
+  });
 
 
 
 
-     $("th").change(function (e){
-        e.preventDefault();
-        var a = hot.getSelected();
-         var b  = hot.getColHeader(a[1],a[2]);
-              var headers = hot.getColHeader();
-        var value  = $(this).find("input[name='id']").val();
-         headers[a[1]] = value;
-          hot.updateSettings({
-                      colHeaders: headers
-                  });
+  $("th").change(function (e){
+    e.preventDefault();
+    var a = hot.getSelected();
+      var b  = hot.getColHeader(a[1],a[2]);
+          var headers = hot.getColHeader();
+    var value  = $(this).find("input[name='id']").val();
+      headers[a[1]] = value;
+      hot.updateSettings({
+                  colHeaders: headers
+              });
   });
 
   hot.render();
@@ -399,12 +371,87 @@ document.addEventListener("DOMContentLoaded", function() {
     for(var i = 0 ; i < headers.length/2 ; i++){
       finalHeader[i] = headers[i].innerText;
     }
-    // console.log(headers[0].innerText);
 
-    // headers.slice(0, Math.ceil(headers.length/2)) . indexOf(val)
-    // console.log(finalHeader)
-    // console.log(data);
+    let labels = [];
+    let dataSet = [];
+
+    data.forEach((el) => {
+      el.forEach((item, i) => {
+        if (i === 0) labels.push(item);
+        else dataSet.push(item);
+      });
+    });
+
+    initializeChart(labels, dataSet);
   }
+
+
+  //-------------------------------------------------------------------------
+  //Charts.js
+
+  function initializeChart(labels, dataSet) {
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: [...labels],
+          datasets: [{
+              data: [...dataSet],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+              ],
+              borderColor: [
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)',
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)',
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)',
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero:true
+                  }
+              }]
+          }
+      }
+    });
+  } 
+  
 });
 </script>
 </body>

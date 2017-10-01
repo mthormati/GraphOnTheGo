@@ -35,13 +35,25 @@ label:hover {
 }
 
 .chart-container {
-  width: 600px;
-  height: 600px;
+  width: 90vw;
+  height: 350px;
+  margin: 0 auto;
 }
 
 #table-container {
   width: 90%;
-  margin: 0 auto 3rem auto;
-  height: 200px;
-  overflow: scroll;
+  margin: 0 auto 1rem auto;
+  height: 150px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+#click {
+  margin-left: 5vw;
+}
+
+.btn {
+  background-color: #3c7de6;
+  color: white;
 }
