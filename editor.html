@@ -28,9 +28,9 @@
       <div class="ui-combobox">
         <div class="ui-value" placeholder="Select Graph"></div>
         <div class="ui-options">
-          <label>Line Graph</label>
-          <label>Bar Chart</label>
-          <label>Pie Chart</label>
+          <label id="line-selector">Line Graph</label>
+          <label id="bar-selector">Bar Chart</label>
+          <label id="pie-selector">Pie Chart</label>
         </div>
       </div>
     </div>
@@ -38,10 +38,10 @@
     <div id="table-container">
       <div id="example" class="dataTable"></div>
     </div>
-    <div id="click" class="btn zeta mr">Preview Graph</div>
+    <div id="preview-button" class="btn zeta mr">Preview Graph</div>
 
     <div id="bar-chart" class="chart-container">
-      <canvas id="myChart"></canvas>
+      <canvas id="myChart" width="1" height="1"></canvas>
     </div>
     
 <!-- <div class="app-popup  app-giphy">
@@ -276,183 +276,96 @@
 //------------------------------------------------------------------------------
 //Table
 
-document.addEventListener("DOMContentLoaded", function() {
-  var session;
-    var colHeadings = ['Labels', 'Data']; 
-    var data = [
-      [ , , ],
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ],      
-      [ , , ]   
-    ],
-      container = document.getElementById('example'),
-      hot;
+// document.addEventListener("DOMContentLoaded", function() {
+//   var session;
+//     var colHeadings = ['Labels', 'Data']; 
+//     var data = [
+//       [ , , ],
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ],      
+//       [ , , ]   
+//     ],
+//       container = document.getElementById('example'),
+//       hot;
 
-      hot = new Handsontable(container, {
-        data: data,
-        colHeaders: colHeadings,
-        colWidths: 298,
-          afterGetColHeader: function (col, TH) {
-              // nothing for first column
-              if (col == -1)
-              {
-                  return;
-              }
-            }
-      });
-
-
-  $("th").dblclick(function (e) {
-    e.preventDefault();
-    var a = hot.getSelected();
-    var b  = hot.getColHeader(a[1],a[2]);
-    var headers = hot.getColHeader();
-    var value;
-
-    if($("th").find("input[name='id']").val())
-    {
-        value  = $("th").find("input[name='id']").val();
-        headers[session] = value;
-        session = a[1];
-        headers[a[1]]="<input name='id' type='text' value="+b+"\>";
-    hot.updateSettings({
-      colHeaders: headers
-    });
-    }
-      else
-      {
-          session = a[1];
-          headers[a[1]]="<input name='id' type='text' value="+b+"\>";
-                hot.updateSettings({
-              colHeaders: headers
-          });
-    $(this).find("input[name='id']").focus();
-      }
-
-  });
+//       hot = new Handsontable(container, {
+//         data: data,
+//         colHeaders: colHeadings,
+//         colWidths: 298,
+//           afterGetColHeader: function (col, TH) {
+//               // nothing for first column
+//               if (col == -1)
+//               {
+//                   return;
+//               }
+//             }
+//       });
 
 
+//   $("th").dblclick(function (e) {
+//     e.preventDefault();
+//     var a = hot.getSelected();
+//     var b  = hot.getColHeader(a[1],a[2]);
+//     var headers = hot.getColHeader();
+//     var value;
+
+//     if($("th").find("input[name='id']").val())
+//     {
+//         value  = $("th").find("input[name='id']").val();
+//         headers[session] = value;
+//         session = a[1];
+//         headers[a[1]]="<input name='id' type='text' value="+b+"\>";
+//     hot.updateSettings({
+//       colHeaders: headers
+//     });
+//     }
+//       else
+//       {
+//           session = a[1];
+//           headers[a[1]]="<input name='id' type='text' value="+b+"\>";
+//                 hot.updateSettings({
+//               colHeaders: headers
+//           });
+//     $(this).find("input[name='id']").focus();
+//       }
+
+//   });
 
 
-  $("th").change(function (e){
-    e.preventDefault();
-    var a = hot.getSelected();
-      var b  = hot.getColHeader(a[1],a[2]);
-          var headers = hot.getColHeader();
-    var value  = $(this).find("input[name='id']").val();
-      headers[a[1]] = value;
-      hot.updateSettings({
-                  colHeaders: headers
-              });
-  });
-
-  hot.render();
-
-  document.getElementById('click').onclick = function(){
-    var headers = document.getElementsByClassName('colHeader');
-    var finalHeader = [];
-    for(var i = 0 ; i < headers.length/2 ; i++){
-      finalHeader[i] = headers[i].innerText;
-    }
-
-    let labels = [];
-    let dataSet = [];
-
-    data.forEach((el) => {
-      el.forEach((item, i) => {
-        if (i === 0) labels.push(item);
-        else dataSet.push(item);
-      });
-    });
-
-    initializeChart(labels, dataSet);
-  }
 
 
-  //-------------------------------------------------------------------------
-  //Charts.js
+//   $("th").change(function (e){
+//     e.preventDefault();
+//     var a = hot.getSelected();
+//       var b  = hot.getColHeader(a[1],a[2]);
+//           var headers = hot.getColHeader();
+//     var value  = $(this).find("input[name='id']").val();
+//       headers[a[1]] = value;
+//       hot.updateSettings({
+//                   colHeaders: headers
+//               });
+//   });
 
-  function initializeChart(labels, dataSet) {
-    var ctx = document.getElementById("myChart").getContext('2d');
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: [...labels],
-          datasets: [{
-              data: [...dataSet],
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)',
-              ],
-              borderColor: [
-                  'rgba(255,99,132,1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)',
-                  'rgba(255,99,132,1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)',
-                  'rgba(255,99,132,1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)',
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
-    });
-  } 
+//   hot.render();
   
-});
+// });
 </script>
 </body>
 </html>
