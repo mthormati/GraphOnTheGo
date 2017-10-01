@@ -37,13 +37,12 @@ label:hover {
 .chart-container {
   padding: 1rem;
   width: 95vw;
-  height: 350px;
+  height: 400px;
   margin: 0 auto;
   overflow: visible;
 }
 
 #table-container {
-  display: flex;
   width: 90%;
   margin: 0 auto 1rem auto;
   height: 150px;

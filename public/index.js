@@ -132,6 +132,8 @@ var GraphEditor = Backbone.View.extend({
         var ctx = document.getElementById("myChart").getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
+            responsive: true,
+            maintainAspectRatio: false,
             data: {
                 labels: [...labels],
                 datasets: [{
