@@ -324,8 +324,8 @@ var GraphEditor = Backbone.View.extend({
             data: {
                 datasets: [{
                     label: title,
-                    fill: false,    
-                    showLine: true,
+                    // fill: false,    
+                    // showLine: true,
                     data: dataObj,
                     backgroundColor: this.backgroundColor,
                     borderColor: this.borderColor,
