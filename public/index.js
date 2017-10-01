@@ -86,8 +86,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-console.log();
-
 var GraphEditor = Backbone.View.extend({
     chartType: '',
 
@@ -172,24 +170,52 @@ var GraphEditor = Backbone.View.extend({
         const label = e.target.textContent;
         document.querySelector('.ui-value').textContent = label;
         document.querySelector('.ui-options').style.opacity = "0";
-
+        this.selectors.generalI.style.visibility = 'visible';         
+        
         if (label === 'Bar Chart') {
             this.selectors.lineI.style.display = 'none';              
             this.selectors.barI.style.display = "inline";
+            document.querySelectorAll('.colHeader').forEach((col, i) => {
+                if (i % 2 === 0) {
+                    col.textContent = 'Labels';
+                } else {
+                    col.textContent = 'Data';
+                }
+            })
             this.chartType = 'Bar';
         } else if (label === 'Pie Chart') {
             this.selectors.lineI.style.display = 'none';
             this.selectors.barI.style.display = 'none';
+            document.querySelectorAll('.colHeader').forEach((col, i) => {
+                if (i % 2 === 0) {
+                    col.textContent = 'Labels';
+                } else {
+                    col.textContent = 'Data';
+                }
+            })
             this.chartType = 'Pie';            
         } else {
             this.selectors.lineI.style.display = 'inline';              
             this.selectors.barI.style.display = 'none';
+            document.querySelectorAll('.colHeader').forEach((col, i) => {
+                if (i % 2 === 0) {
+                    col.textContent = 'X Values';
+                } else {
+                    col.textContent = 'Y Values';
+                }
+            })
             this.chartType = 'Line';
         }
-        this.selectors.generalI.style.display = 'inline';
+
+        document.querySelectorAll('label').forEach((label) => {
+            label.style.display = 'none';
+        });
     },
 
     _dropdown: function(e) {
+        document.querySelectorAll('label').forEach((label) => {           
+            label.style.display = 'block';
+        })
         document.querySelector('.ui-options').style.opacity = "1";
     },
 
@@ -210,12 +236,26 @@ var GraphEditor = Backbone.View.extend({
           });
         });
 
-        const title = document.querySelector('#plot-title').value;
+        const plotTitle = document.querySelector('#plot-title').value;
+        const lineTitle = document.querySelector('#line-title').value;
+        const x = document.querySelector('#line-x').value;
+        const y = document.querySelector('#line-y').value;
 
         if (this.chartType === 'Bar') {
-            this.initializeBarChart(title, labels, dataSet);
+            this.initializeBarChart(plotTitle, labels, dataSet);
         } else if (this.chartType === 'Pie') {
             this.initializePieChart(labels, dataSet);
+        } else {
+            scatterData = [];
+            for (let i = 0; i < labels.length; i++) {
+                scatterData.push({
+                    x: labels[i],
+                    y: dataSet[i]
+                })
+            }
+            console.log(scatterData);
+
+            this.initializeScatterPlot(lineTitle, x, y, scatterData);
         }
     },
 
@@ -269,188 +309,47 @@ var GraphEditor = Backbone.View.extend({
             },
         });
 
-        var myPieChart = new Chart(ctx,{
-            type: 'pie',
-            data: data,
-        });
-
         this.selectors.barC.style.display = 'none';
         this.selectors.submit.style.display = 'inline-block';
         this.selectors.pieC.style.display = 'inline';
         this.selectors.lineC.style.display = 'none';
     },
 
-    // render: function() {
-    //   var self = this,
-    //       body = document.body,
-    //       gallery = $('.js-image-results'),
-    //       timer;
+    initializeScatterPlot(title, xTitle, yTitle, dataObj) {
+        console.log(title);
+        var ctx = document.getElementById("lineChart").getContext('2d');
+        var pieChart = new Chart(ctx, {
+            type: 'scatter',
+            responsive: true,
+            maintainAspectRatio: false,
+            data: {
+                datasets: [{
+                    label: title,
+                    xAxisID: xTitle,
+                    yAxisID: yTitle,
+                    fill: false,    
+                    showLine: true,
+                    data: dataObj,
+                    backgroundColor: this.backgroundColor,
+                    borderColor: this.borderColor,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
+                    }]
+                }
+            }
+        });
 
-    //   this._currentImages = [];
-
-    //   // Show loading spinner
-    //   $('.spinner-bokeh').removeClass('hidden');
-
-    //   // Disable pointer events while scrolling to improve performance.
-    //   $(window).on('scroll', function() {
-    //     clearTimeout(timer);
-    //     if(!body.classList.contains('disable-hover')) {
-    //       body.classList.add('disable-hover')
-    //     }
-
-    //     timer = setTimeout(function(){
-    //       body.classList.remove('disable-hover')
-    //     },300);
-    //   }, false);
-
-    //   gallery.masonry({
-    //     itemSelector: 'figure',
-    //     columnWidth:  function() {
-    //       return gallery.width() / 3;
-    //     }
-    //   });
-
-    //   this._currentXhr = $.ajax({
-    //     url:'https://api.giphy.com/v1/gifs/trending?api_key=' + this._apiKey + '&limit=100',
-    //     success:function(result){
-    //       if (result.data.length > 0) {
-    //         $(result.data).each(function(index, result) {
-    //           var gifStillUrl = result.images.downsized_still.url;
-    //           var gifAnimatedUrl = result.images.downsized.url;
-    //           var gifAnimatedFullUrl = result.images.original.url;
-    //           var gifAnimatedFullWidth = result.images.original.width;
-    //           self._loadImage(gifStillUrl, gifAnimatedUrl, gifAnimatedFullUrl, gifAnimatedFullWidth, gallery);
-    //         });
-    //       }
-    //     }
-    //   });
-    // },
-
-    // _done: function(e) {
-    //   var target = $(e.target);
-    //   var gif = target.attr('data-gif-animated-full');
-    //   var width = target.attr('data-gif-animated-full-width');
-
-    //   // Let Mixmax know it was done.
-    //   Mixmax.done({
-    //     src: gif,
-    //     width: width
-    //   });
-    // },
-
-    // _cancel: function() {
-    //   Mixmax.cancel();
-    // },
-
-    // _search: function(e) {
-    //   e.preventDefault();
-
-    //   var self = this,
-    //       term = $('.js-giphy-search').val(),
-    //       gallery = $('.js-image-results');
-
-    //   // Cancel last Ajax request
-    //   if (this._currentXhr) this._currentXhr.abort();
-
-    //   // Clear images any images currently loading
-    //   if (this._currentImages) {
-    //     var currentImages = $(this._currentImages);
-
-    //     currentImages.each(function(index, image){
-    //       image.src = '';
-    //       image.onload = null;
-    //     });
-
-    //     currentImages = [];
-    //   }
-
-    //   $('.spinner-bokeh').removeClass('hidden');
-    //   $('.js-no-results').remove();
-
-    //   gallery.empty().masonry().masonry('remove', gallery.find('.js-gif'));
-    //   gallery.masonry().masonry('destroy');
-    //   gallery.masonry({
-    //     itemSelector: 'figure',
-    //     columnWidth:  function() {
-    //       return gallery.width() / 3;
-    //     }
-    //   });
-
-    //   this._currentXhr = $.ajax({
-    //     url:'https://api.giphy.com/v1/gifs/search?q=' + encodeURIComponent(term) + '&api_key=' + this._apiKey + '&limit=100',
-    //     success:function(result){
-    //       if (result.data.length > 0) {
-    //         $(result.data).each(function(index, result) {
-    //           var gifStillUrl = result.images.downsized_still.url;
-    //           var gifAnimatedUrl = result.images.downsized.url;
-    //           var gifAnimatedFullUrl = result.images.original.url;
-    //           var gifAnimatedFullWidth = result.images.original.width;
-    //           self._loadImage(gifStillUrl, gifAnimatedUrl, gifAnimatedFullUrl, gifAnimatedFullWidth, gallery);
-    //         });
-    //       } else {
-    //         $('.spinner-bokeh').addClass('hidden');
-    //         var phrase = term.length == 0 ? 'for you' : 'for <strong>&ldquo;' + term + '&rdquo;</strong>'
-    //         var noResultsHTML = $('<div class="js-no-results  text--reverse   m++  p++">'
-    //           + '<h2 class="text--normal  mb++">We couldn&rsquo;t find any results ' + phrase + ', but we did find Taylor&nbsp;Lautner.</h2>'
-    //           + '<img src="' + Environment.getRootUrl() +'/img/giphy/taylor.gif"></div>');
-    //         noResultsHTML.hide();
-    //         gallery.append(noResultsHTML);
-    //         noResultsHTML.fadeIn(150);
-    //       }
-    //     }
-    //   });
-    // },
-
-    // _loadImage: function(gifStillUrl, gifAnimatedUrl, gifAnimatedFullUrl, gifAnimatedFullWidth, container){
-    //   var imgStill = new Image();
-    //   var imgAnimated = new Image();
-    //   var el = $('<figure><img '
-    //       + 'data-gif-animated="' + gifAnimatedUrl + '" '
-    //       + 'data-gif-animated-full="' + gifAnimatedFullUrl + '" '
-    //       + 'data-gif-animated-full-width="' + gifAnimatedFullWidth + '" '
-    //       + 'class="js-gif" src="' + gifStillUrl + '"></figure>');
-    //   el.hide();
-    //   container.append(el);
-
-    //   imgStill.onload = function(){
-    //     imgStill.loaded = true;
-    //     loadIfDone();
-    //   };
-
-    //   imgAnimated.onload = function(){
-    //     imgAnimated.loaded = true;
-    //     loadIfDone();
-    //   };
-
-    //   imgStill.src = gifStillUrl;
-    //   imgAnimated.src = gifAnimatedUrl;
-    //   this._currentImages.push(imgStill, imgAnimated);
-
-    //   function loadIfDone(){
-    //     if (!imgStill.loaded || !imgAnimated.loaded) return;
-    //     container.masonry( 'appended', el ).fadeIn();
-    //     el.fadeIn(200);
-    //     $('.spinner-bokeh').addClass('hidden');
-    //   }
-    // },
-
-    // _play: function(e) {
-    //   var target = $(e.target);
-    //   var gifStill = target.attr('src');
-    //   var gifAnimated = target.data('gifAnimated');
-
-    //   target.attr('src', gifAnimated);
-    //   target.data('gifStill', gifStill);
-    // },
-
-    // _pause: function(e) {
-    //   var target = $(e.target);
-    //   var gifStill = target.data('gifStill');
-    //   var gifAnimated = target.attr('src');
-
-    //   target.attr('src', gifStill);
-    //   target.data('gifAnimated', gifAnimated);
-    // }
+        this.selectors.barC.style.display = 'none';
+        this.selectors.submit.style.display = 'inline-block';
+        this.selectors.pieC.style.display = 'none';
+        this.selectors.lineC.style.display = 'inline';
+    }
 });
 
 // Create
