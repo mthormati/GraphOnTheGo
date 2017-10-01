@@ -88,12 +88,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 var GraphEditor = Backbone.View.extend({
+
     events: {
-    //   'click .js-gif': '_done',
-    //   'click .js-search-gifs': '_search',
-    //   'submit .js-search-gifs': '_search',
-    //   'mouseenter .js-gif': '_play',
-    //   'mouseleave .js-gif': '_pause'
         'click label': '_labelSelect',
         'mouseover .ui-value': '_dropdown',
         'click #preview-button': '_preview',
@@ -101,20 +97,26 @@ var GraphEditor = Backbone.View.extend({
     },
 
     _done: function(e){
-        // console.log('hi')
-        var chart = document.getElementById('myChart').toDataURL();
-        var width = document.getElementById('myChart').width;
+        var chart = document.getElementById('barChart').toDataURL();
+        var width = document.getElementById('barChart').width;
         Mixmax.done({
         src: chart,
         width: width
       });
-        // console.log(document.getElementById('myChart'));
-        // console.log(document.getElementById('myChart').width);
     },
 
     _labelSelect: function(e) {
-        document.querySelector('.ui-value').textContent = e.target.textContent;
+        const label = e.target.textContent;
+        document.querySelector('.ui-value').textContent = label;
         document.querySelector('.ui-options').style.opacity = "0";
+
+        if (label === 'Bar Chart' || label === 'Pie Chart') {
+            document.querySelector('#line-inputs').style.display = 'none';              
+            document.querySelector('#pie-bar-inputs').style.display = "inline";
+        } else {
+            document.querySelector('#line-inputs').style.display = 'inline';              
+            document.querySelector('#pie-bar-inputs').style.display = 'none';
+        }
     },
 
     _dropdown: function(e) {
@@ -138,12 +140,13 @@ var GraphEditor = Backbone.View.extend({
           });
         });
 
-        this.initializeChart(labels, dataSet);
+        if ()
+        this.initializeBarChart(labels, dataSet);
     },
 
-    initializeChart: function(labels, dataSet) {
-        var ctx = document.getElementById("myChart").getContext('2d');
-        var myChart = new Chart(ctx, {
+    initializeBarChart: function(labels, dataSet) {
+        var ctx = document.getElementById("barChart").getContext('2d');
+        var barChart = new Chart(ctx, {
             type: 'bar',
             responsive: true,
             maintainAspectRatio: false,

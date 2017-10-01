@@ -5,6 +5,7 @@ var cors = require('cors');
 
 // Serve assets in /public.
 app.use(express.static(__dirname + '/public'));
+app.use(cors());
 
 // So we can POST.
 app.use(bodyParser.urlencoded({
@@ -13,7 +14,8 @@ app.use(bodyParser.urlencoded({
 
 // Since Mixmax calls this API directly from the client-side, it must be whitelisted.
 var corsOptions = {
-  origin: /^[^.\s]+\.mixmax\.com$/,
+  //origin: /^[^.\s]+\.mixmax\.com$/,
+  origin: 'https://compose.mixmax.com',
   credentials: true
 };
 

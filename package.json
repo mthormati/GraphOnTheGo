@@ -18,7 +18,7 @@
   "homepage": "https://github.com/mixmaxhq/giphy-mixmax-app",
   "dependencies": {
     "body-parser": "^1.12.2",
-    "cors": "^2.7.1",
+    "cors": "^2.8.4",
     "express": "^4.12.3",
     "handsontable": "^0.34.4",
     "pem": "^1.9.4"
