@@ -15,6 +15,7 @@ body {
 }
 
 .general-container {
+  position: relative;
   width: 100vw;
   text-align: center;
 }
@@ -32,14 +33,6 @@ body {
 
 label:hover {
   background:whitesmoke;
-}
-
-.chart-container {
-  padding: 1rem;
-  width: 95vw;
-  height: 400px;
-  margin: 0 auto;
-  overflow: visible;
 }
 
 #table-container {
@@ -61,10 +54,14 @@ label:hover {
 }
 
 canvas {
+  max-width: 90vw;
+  max-height: 400px;
+  margin: 2rem auto 0 auto;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
 }
 
 #submitButton {
+  margin-top: 1rem;
   margin-left: 5vw;
   margin-bottom: 1rem;
 }

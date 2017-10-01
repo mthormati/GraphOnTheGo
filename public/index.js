@@ -263,8 +263,6 @@ var GraphEditor = Backbone.View.extend({
         var ctx = document.getElementById("barChart").getContext('2d');
         var barChart = new Chart(ctx, {
             type: 'bar',
-            responsive: true,
-            maintainAspectRatio: false,
             data: {
                 labels: [...labels],
                 datasets: [{
@@ -283,7 +281,10 @@ var GraphEditor = Backbone.View.extend({
                         }
                     }]
                 },
-            }
+              
+                maintainAspectRatio: false,
+                scaleLabel: "<%= '    ' + value%>"
+            },
         });
 
         this.selectors.barC.style.display = 'inline';
@@ -296,8 +297,6 @@ var GraphEditor = Backbone.View.extend({
         var ctx = document.getElementById("pieChart").getContext('2d');
         var pieChart = new Chart(ctx, {
             type: 'pie',
-            responsive: true,
-            maintainAspectRatio: false,
             data: {
                 labels: [...labels],
                 datasets: [{
@@ -307,6 +306,9 @@ var GraphEditor = Backbone.View.extend({
                     borderWidth: 1
                 }]
             },
+            options: {
+                maintainAspectRatio: false,                
+            }
         });
 
         this.selectors.barC.style.display = 'none';
@@ -316,17 +318,12 @@ var GraphEditor = Backbone.View.extend({
     },
 
     initializeScatterPlot(title, xTitle, yTitle, dataObj) {
-        console.log(title);
         var ctx = document.getElementById("lineChart").getContext('2d');
-        var pieChart = new Chart(ctx, {
+        var scatterChart = new Chart(ctx, {
             type: 'scatter',
-            responsive: true,
-            maintainAspectRatio: false,
             data: {
                 datasets: [{
                     label: title,
-                    xAxisID: xTitle,
-                    yAxisID: yTitle,
                     fill: false,    
                     showLine: true,
                     data: dataObj,
@@ -337,11 +334,23 @@ var GraphEditor = Backbone.View.extend({
             },
             options: {
                 scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                          display: true,
+                          labelString: yTitle
+                        }
+                    }],
                     xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: xTitle
+                        },
                         type: 'linear',
                         position: 'bottom'
                     }]
-                }
+                },
+                maintainAspectRatio: false,
+                
             }
         });
 
