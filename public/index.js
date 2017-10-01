@@ -2,7 +2,7 @@ var data;
 
 document.addEventListener("DOMContentLoaded", function() {
     var session;
-    var colHeadings = ['Labels', 'Data'];
+    var colHeadings = ['X', 'Y'];
     data = [
         [ , , ],
         [ , , ],
@@ -186,24 +186,24 @@ var GraphEditor = Backbone.View.extend({
         } else if (label === 'Pie Chart') {
             this.selectors.lineI.style.display = 'none';
             this.selectors.barI.style.display = 'none';
-            document.querySelectorAll('.colHeader').forEach((col, i) => {
-                if (i % 2 === 0) {
-                    col.textContent = 'Labels';
-                } else {
-                    col.textContent = 'Data';
-                }
-            })
+            // document.querySelectorAll('.colHeader').forEach((col, i) => {
+            //     if (i % 2 === 0) {
+            //         col.textContent = 'Labels';
+            //     } else {
+            //         col.textContent = 'Data';
+            //     }
+            // })
             this.chartType = 'Pie';            
         } else {
             this.selectors.lineI.style.display = 'inline';              
             this.selectors.barI.style.display = 'none';
-            document.querySelectorAll('.colHeader').forEach((col, i) => {
-                if (i % 2 === 0) {
-                    col.textContent = 'X Values';
-                } else {
-                    col.textContent = 'Y Values';
-                }
-            })
+            // document.querySelectorAll('.colHeader').forEach((col, i) => {
+            //     if (i % 2 === 0) {
+            //         col.textContent = 'X Values';
+            //     } else {
+            //         col.textContent = 'Y Values';
+            //     }
+            // })
             this.chartType = 'Line';
         }
 
