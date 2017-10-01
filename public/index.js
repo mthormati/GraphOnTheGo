@@ -86,8 +86,62 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+console.log();
 
 var GraphEditor = Backbone.View.extend({
+    chartType: '',
+
+    selectors: {
+        barI: document.querySelector('#bar-inputs'),
+        lineI: document.querySelector('#line-inputs'),  
+        generalI: document.querySelector('#general-inputs'),
+        barC: document.querySelector('#barChart'),
+        pieC: document.querySelector('#pieChart'),
+        lineC: document.querySelector('#lineChart'),
+        submit: document.querySelector('#submitButton'),
+    },
+
+    backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+    ],
+
+    borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+    ],
 
     events: {
         'click label': '_labelSelect',
@@ -97,8 +151,17 @@ var GraphEditor = Backbone.View.extend({
     },
 
     _done: function(e){
-        var chart = document.getElementById('barChart').toDataURL();
-        var width = document.getElementById('barChart').width;
+        if (this.chartType === 'Bar') {
+            var chart = this.selectors.barC.toDataURL();
+            var width = this.selectors.barC.width;
+        } else if (this.chartType === 'Pie') {
+            var chart = this.selectors.pieC.toDataURL();
+            var width = this.selectors.pieC.width;
+        } else {
+            var chart = this.selectors.lineC.toDataURL();
+            var width = this.selectors.lineC.width;
+        }
+
         Mixmax.done({
         src: chart,
         width: width
@@ -110,13 +173,20 @@ var GraphEditor = Backbone.View.extend({
         document.querySelector('.ui-value').textContent = label;
         document.querySelector('.ui-options').style.opacity = "0";
 
-        if (label === 'Bar Chart' || label === 'Pie Chart') {
-            document.querySelector('#line-inputs').style.display = 'none';              
-            document.querySelector('#pie-bar-inputs').style.display = "inline";
+        if (label === 'Bar Chart') {
+            this.selectors.lineI.style.display = 'none';              
+            this.selectors.barI.style.display = "inline";
+            this.chartType = 'Bar';
+        } else if (label === 'Pie Chart') {
+            this.selectors.lineI.style.display = 'none';
+            this.selectors.barI.style.display = 'none';
+            this.chartType = 'Pie';            
         } else {
-            document.querySelector('#line-inputs').style.display = 'inline';              
-            document.querySelector('#pie-bar-inputs').style.display = 'none';
+            this.selectors.lineI.style.display = 'inline';              
+            this.selectors.barI.style.display = 'none';
+            this.chartType = 'Line';
         }
+        this.selectors.generalI.style.display = 'inline';
     },
 
     _dropdown: function(e) {
@@ -140,11 +210,16 @@ var GraphEditor = Backbone.View.extend({
           });
         });
 
-        if ()
-        this.initializeBarChart(labels, dataSet);
+        const title = document.querySelector('#plot-title').value;
+
+        if (this.chartType === 'Bar') {
+            this.initializeBarChart(title, labels, dataSet);
+        } else if (this.chartType === 'Pie') {
+            this.initializePieChart(labels, dataSet);
+        }
     },
 
-    initializeBarChart: function(labels, dataSet) {
+    initializeBarChart: function(title, labels, dataSet) {
         var ctx = document.getElementById("barChart").getContext('2d');
         var barChart = new Chart(ctx, {
             type: 'bar',
@@ -153,47 +228,10 @@ var GraphEditor = Backbone.View.extend({
             data: {
                 labels: [...labels],
                 datasets: [{
+                    label: title,
                     data: [...dataSet],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                    ],
+                    backgroundColor: this.backgroundColor,
+                    borderColor: this.borderColor,
                     borderWidth: 1
                 }]
             },
@@ -205,10 +243,42 @@ var GraphEditor = Backbone.View.extend({
                         }
                     }]
                 },
-                // onAnimationComplete: done
             }
         });
-    }
+
+        this.selectors.barC.style.display = 'inline';
+        this.selectors.submit.style.display = 'inline-block';
+        this.selectors.pieC.style.display = 'none';
+        this.selectors.lineC.style.display = 'none';
+    },
+
+    initializePieChart: function(labels, dataSet) {
+        var ctx = document.getElementById("pieChart").getContext('2d');
+        var pieChart = new Chart(ctx, {
+            type: 'pie',
+            responsive: true,
+            maintainAspectRatio: false,
+            data: {
+                labels: [...labels],
+                datasets: [{
+                    data: [...dataSet],
+                    backgroundColor: this.backgroundColor,
+                    borderColor: this.borderColor,
+                    borderWidth: 1
+                }]
+            },
+        });
+
+        var myPieChart = new Chart(ctx,{
+            type: 'pie',
+            data: data,
+        });
+
+        this.selectors.barC.style.display = 'none';
+        this.selectors.submit.style.display = 'inline-block';
+        this.selectors.pieC.style.display = 'inline';
+        this.selectors.lineC.style.display = 'none';
+    },
 
     // render: function() {
     //   var self = this,

@@ -28,35 +28,37 @@
       <div class="ui-combobox">
         <div class="ui-value" placeholder="Select Graph"></div>
         <div class="ui-options">
-          <label id="line-selector">Line Graph</label>
+          <label id="line-selector">Scatter Plot</label>
           <label id="bar-selector">Bar Chart</label>
           <label id="pie-selector">Pie Chart</label>
         </div>
       </div>
     </div>
 
-    <div id="pie-bar-inputs">
+    <div id="bar-inputs">
       <div class="general-container">
-        <input class="field field--border option-title input" placeholder="Chart Title">
+        <input id="plot-title" class="field field--border option-title input" placeholder="Chart Title">
       </div>
-  
+    </div>
+    <div id="line-inputs">
+      <div class="general-container">
+        <input id="line-title" class="field field--border option-title input" placeholder="Chart Title">
+        <input id="line-x" class="field field--border option-title input" placeholder="X-Axis Title">
+        <input id="line-y" class="field field--border option-title input" placeholder="Y-Axis Title">        
+      </div>
+    </div>
+
+    <div id="general-inputs">
       <div id="table-container">
         <div id="example" class="dataTable"></div>
       </div>
       <div id="preview-button" class="btn zeta mr">Preview Chart</div>
     </div>
-    <div id="line-inputs">
-      hello
-    </div>
 
     <div id="bar-chart" class="chart-container">
       <canvas id="barChart" width="0" height="0"></canvas>
-    </div>
-    <div id="pie-chart" class="chart-container">
-        <canvas id="pieChart" width="0" height="0"></canvas>        
-    </div>
-    <div id="line-chart" class="chart-container">
-        <canvas id="lineChart" width="0" height="0"></canvas>        
+      <canvas id="pieChart" width="0" height="0"></canvas>        
+      <canvas id="lineChart" width="0" height="0"></canvas>        
     </div>
 
     <div id="submitButton" class="btn zeta mr">Add Chart</div>    
@@ -65,11 +67,12 @@
   <script src="index.js"></script>
 
 <script>
-  document.querySelector('#pie-bar-inputs').style.display = 'none';
+  document.querySelector('#bar-inputs').style.display = 'none';
   document.querySelector('#line-inputs').style.display = 'none';  
-  document.querySelector('#bar-chart').style.display = 'none';
-  document.querySelector('#pie-chart').style.display = 'none';
-  document.querySelector('#line-chart').style.display = 'none';
+  document.querySelector('#general-inputs').style.display = 'none';
+  document.querySelector('#barChart').style.display = 'none';
+  document.querySelector('#pieChart').style.display = 'none';
+  document.querySelector('#lineChart').style.display = 'none';
   document.querySelector('#submitButton').style.display = 'none';
 </script>
 </body>
